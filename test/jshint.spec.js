@@ -1,6 +1,6 @@
 require('mocha-jshint')({
-  git: {
-    modified: true,
-    commits: 2
-  }
+    git: {
+        modified: true,
+        commits: 2
+    }
 });

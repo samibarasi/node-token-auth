@@ -12,77 +12,77 @@ const server = require('tiny-lr')();
 // *** config *** //
 
 const paths = {
-  scripts: [
-    path.join('src', '**', '*.js'),
-    path.join('src', '*.js')
-  ],
-  styles: [
-    path.join('src', 'client', 'css', '*.css')
-  ],
-  server: path.join('src', 'server', 'server.js')
+    scripts: [
+        path.join('src', '**', '*.js'),
+        path.join('src', '*.js')
+    ],
+    styles: [
+        path.join('src', 'client', 'css', '*.css')
+    ],
+    server: path.join('src', 'server', 'server.js')
 };
 
 const lrPort = 35729;
 
 const nodemonConfig = {
-  script: paths.server,
-  ext: 'js css',
-  ignore: ['node_modules'],
-  env: {
-    NODE_ENV: 'development'
-  }
+    script: paths.server,
+    ext: 'js css',
+    ignore: ['node_modules'],
+    env: {
+        NODE_ENV: 'development'
+    }
 };
 
 // *** default task *** //
 
 gulp.task('default', () => {
-  runSequence(
-    ['jshint'],
-    ['jscs'],
-    ['lr'],
-    ['nodemon'],
-    ['watch']
-  );
+    runSequence(
+        ['jshint'],
+        ['jscs'],
+        ['lr'],
+        ['nodemon'],
+        ['watch']
+    );
 });
 
 // *** sub tasks ** //
 
 gulp.task('jshint', () => {
-  return gulp.src(paths.scripts)
-    .pipe(plumber())
-    .pipe(jshint({
-      esnext: true
-    }))
-    .pipe(jshint.reporter('jshint-stylish'))
-    .pipe(jshint.reporter('fail'));
+    return gulp.src(paths.scripts)
+        .pipe(plumber())
+        .pipe(jshint({
+            esnext: true
+        }))
+        .pipe(jshint.reporter('jshint-stylish'))
+        .pipe(jshint.reporter('fail'));
 });
 
 gulp.task('jscs', () => {
-  return gulp.src(paths.scripts)
-    .pipe(plumber())
-    .pipe(jscs())
-    .pipe(jscs.reporter())
-    .pipe(jscs.reporter('fail'));
+    return gulp.src(paths.scripts)
+        .pipe(plumber())
+        .pipe(jscs())
+        .pipe(jscs.reporter())
+        .pipe(jscs.reporter('fail'));
 });
 
 gulp.task('styles', () => {
-  return gulp.src(paths.styles)
-    .pipe(plumber());
+    return gulp.src(paths.styles)
+        .pipe(plumber());
 });
 
 gulp.task('lr', () => {
-  server.listen(lrPort, (err) => {
-    if (err) {
-      return console.error(err);
-    }
-  });
+    server.listen(lrPort, (err) => {
+        if (err) {
+            return console.error(err);
+        }
+    });
 });
 
 gulp.task('nodemon', () => {
-  return nodemon(nodemonConfig);
+    return nodemon(nodemonConfig);
 });
 
 gulp.task('watch', () => {
-  gulp.watch(paths.scripts, ['jshint', 'jscs']);
-  gulp.watch(paths.styles, ['styles']);
+    gulp.watch(paths.scripts, ['jshint', 'jscs']);
+    gulp.watch(paths.styles, ['styles']);
 });
